@@ -10,38 +10,41 @@ import {
     CardImg
 } from "reactstrap";
 
+export default function RecipeReviewCard({ imageurl, country, cases, deaths, recovered, todayRecovered, active }) {
 
+    const changeText = (text) => {
+        return text.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+    const content = <div>
+        <p className="p-map">
+            Cases:
+         {changeText(cases)}
+        </p>
+        <p className="p-map">
+            Deaths:
+        {changeText(deaths)}
+        </p>
+        <p className="p-map">
+            Recovered:
+         {changeText(recovered)}
+        </p>
+        <p className="p-map">
+            Today Recovered:
+          {changeText(todayRecovered)}
+        </p>
+        <p className="p-map">
+            Active:
+          {changeText(active)}
+        </p>
+    </div>
 
-
-export default function RecipeReviewCard(props) {
     return (
         <Card>
-            <CardImg top src={props.imageurl} alt="..." />
+            <CardImg top src={imageurl} alt="..." />
             <CardBody>
-                <CardTitle>{props.country}</CardTitle>
+                <CardTitle>{country}</CardTitle>
                 <CardText>
-                    <div>
-                        <p className="p-map">
-                            Cases:
-                             {props.cases.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-                        </p>
-                        <p className="p-map">
-                            Deaths:
-                         {props.deaths.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-                        </p>
-                        <p className="p-map">
-                            Recovered:
-                             {props.recovered.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-                        </p>
-                        <p className="p-map">
-                            Today Recovered:
-                              {props.todayRecovered.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-                        </p>
-                        <p className="p-map">
-                            Active:
-                              {props.active.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-                        </p>
-                    </div>
+                    {content}
                 </CardText>
             </CardBody>
         </Card>

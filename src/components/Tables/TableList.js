@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import Spiner from '../Spiner/spiner'
 import './table.css'
 // reactstrap components
 import {
@@ -13,19 +14,16 @@ const TableList = (props) => {
 
   const [filterBy, setFilterBy] = useState('');
 
-  let spiner =
-    <div className="spiner-continer">
-      <div className="spinner">
-        <div className="lds-dual-ring">
-        </div>
-      </div>
-    </div>
-
-  let filterArr = props ? props.countries.filter(c => c.Country.includes(filterBy)) : [];
-
   const changeText = (text) => {
     return text.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
+
+  if (!props.countries) {
+    return <Spiner />
+  }
+
+  let filterArr = props.countries.filter(c => c.Country.includes(filterBy))
+
   return (
     <>
       <form>
@@ -49,19 +47,18 @@ const TableList = (props) => {
             <th>Total Deaths</th>
           </tr>
         </thead>
-        <tbody>
-          {!props.countries ? spiner :
-            filterArr.map((c, key) => {
-              return (
-                <tr key={key}>
-                  <td>{c.Country}</td>
-                  <td>{changeText(c.NewConfirmed)}</td>
-                  <td>{changeText(c.TotalConfirmed)}</td>
-                  <td>{changeText(c.NewDeaths)}</td>
-                  <td >{changeText(c.TotalDeaths)}</td>
-                </tr>
-              )
-            })}
+        <tbody> {
+          filterArr.map((c, key) => {
+            return (
+              <tr key={key}>
+                <td>{c.Country}</td>
+                <td>{changeText(c.NewConfirmed)}</td>
+                <td>{changeText(c.TotalConfirmed)}</td>
+                <td>{changeText(c.NewDeaths)}</td>
+                <td >{changeText(c.TotalDeaths)}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </Table>
     </>

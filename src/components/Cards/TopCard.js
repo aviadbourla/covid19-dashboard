@@ -16,20 +16,22 @@ let spiner = <div className="spiner-continer">
     </div>
 </div>
 
-const TopCard = (props) => {
+const TopCard = ({ title, cardText }) => {
     return (
         <React.Fragment>
             <Card className="topCard">
                 <CardHeader>
-                    <h3 className="card-category">
-                        {props.title}
-                    </h3>
+                    <p className="title-card">
+                        {title}
+                    </p>
                 </CardHeader>
                 <CardBody >
                     <CardText className="cardText"  >
                         {
-                            props.cardText ?
-                                props.cardText.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                            cardText ?
+                                <div className="over-flow">
+                                    {cardText.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                                </div>
                                 :
                                 <div  >
                                     <PortableWifiOffIcon fontSize="large" />

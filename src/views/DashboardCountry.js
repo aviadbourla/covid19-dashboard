@@ -42,6 +42,45 @@ const DashboardCountry = (props) => {
         getCountries();
     }, [country])
 
+    const getLastUpdated = () => {
+        if (!countryObj.updated) {
+            return null
+        }
+        return <h4>last updated: {new Date(countryObj.updated).toLocaleDateString("en-IE").substring(0, 4)
+            + ' ' +
+            new Date(countryObj.updated).toUTCString().substring(18, 22)}</h4>
+    }
+
+    const getTopCards = () => {
+
+        const { todayCases, active, recovered, todayDeaths, deaths, critical } = countryObj
+        return [
+            {
+                title: 'Today Confirmed',
+                value: todayCases
+            },
+            {
+                title: 'Total Confirmed',
+                value: active
+            },
+            {
+                title: 'Total Recovered',
+                value: recovered
+            },
+            {
+                title: 'Today Deaths',
+                value: todayDeaths
+            },
+            {
+                title: 'Total Deathsd',
+                value: deaths
+            },
+            {
+                title: 'Critical',
+                value: critical
+            }
+        ]
+    }
     return (
         <>
             <div className="content">
@@ -50,57 +89,20 @@ const DashboardCountry = (props) => {
                         <div className="header-div">
                             <h1>{countryObj.country} live Statistics </h1>
                             {
-                                countryObj.updated &&
-                                <h4>
-                                    last updated:
-                                        {
-                                        ' ' +
-                                        new Date(countryObj.updated).toLocaleDateString("en-IE").substring(0, 4)
-                                        + ' ' +
-                                        new Date(countryObj.updated).toUTCString().substring(18, 22)
-                                    }
-                                </h4>
+                                getLastUpdated()
                             }
                         </div>
                     </Col>
                 </Row>
                 <Row>
-                    <Col lg="2">
-                        <TopCard
-                            title={'Today Confirmed'}
-                            cardText={countryObj.todayCases}
-                        />
-                    </Col>
-                    <Col lg="2">
-                        <TopCard
-                            title={'Total Confirmed'}
-                            cardText={countryObj.active}
-                        />
-                    </Col>
-                    <Col lg="2">
-                        <TopCard
-                            title={'Total Recovered'}
-                            cardText={countryObj.recovered}
-                        />
-                    </Col>
-                    <Col lg="2">
-                        <TopCard
-                            title={'Today Deaths'}
-                            cardText={countryObj.todayDeaths}
-                        />
-                    </Col>
-                    <Col lg="2">
-                        <TopCard
-                            title={'Total Deaths'}
-                            cardText={countryObj.deaths}
-                        />
-                    </Col>
-                    <Col lg="2">
-                        <TopCard
-                            title={'critical '}
-                            cardText={countryObj.critical}
-                        />
-                    </Col>
+                    {getTopCards().map(({ title, value }) => {
+                        return <Col lg="2">
+                            <TopCard
+                                title={title}
+                                cardText={value}
+                            />
+                        </Col>
+                    })}
                 </Row>
                 <Row>
                     <Col xs="12">

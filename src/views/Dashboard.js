@@ -8,6 +8,7 @@ import covidReqestes from '../HttpReq/covidReqestes'
 import Showmap from "components/Map/Showmap";
 import './dashboard.css'
 import Footer from "components/Footer/Footer.js";
+import Spiner from '../components/Spiner/spiner'
 // reactstrap components
 import {
   Card,
@@ -26,7 +27,8 @@ class Dashboard extends React.Component {
       dataCovidGlobaly: [],
       dataCovidCountries: [],
       isloading: true,
-      continentArr: []
+      continentArr: [],
+      eror: ''
     };
   }
 
@@ -36,7 +38,7 @@ class Dashboard extends React.Component {
 
   getApi = async () => {
     try {
-      let requests = this.getRquests();
+      const requests = this.getRquests();
       let promiseDataArr = []
       await Promise.all(requests).then((values) => {
         promiseDataArr = values;
@@ -50,131 +52,128 @@ class Dashboard extends React.Component {
       })
     } catch (e) {
       console.log(e)
+      //404 
     }
   }
 
   getRquests() {
-    let temp = []
-    temp.push(covidReqestes.getSummary())
-    temp.push(covidReqestes.getAll())
-    temp.push(covidReqestes.getCountriesArr())
-    temp.push(covidReqestes.getContinents())
-    return temp
+    return [
+      covidReqestes.getSummary(),
+      covidReqestes.getAll(),
+      covidReqestes.getCountriesArr(),
+      covidReqestes.getContinents()
+    ]
+  }
+  getLastUpdated() {
+    const { updated } = this.state.dataCovidGlobaly
+    if (!updated) {
+      return null
+    }
+    return <h4>last updated: {new Date(updated).toLocaleDateString("en-IE").substring(0, 4)
+      + ' ' +
+      new Date(updated).toUTCString().substring(18, 22)}</h4>
   }
 
+  getTopCards() {
+    const { todayCases, cases, recovered, todayDeaths, deaths, critical } = this.state.dataCovidGlobaly
+
+    return [
+      {
+        title: 'Today Confirmed',
+        value: todayCases
+      },
+      {
+        title: 'Total Confirmed',
+        value: cases
+      },
+      {
+        title: 'Total Recovered',
+        value: recovered
+      },
+      {
+        title: 'Today Deaths',
+        value: todayDeaths
+      },
+      {
+        title: 'Total Deathsd',
+        value: deaths
+      },
+      {
+        title: 'Critical',
+        value: critical
+      }
+    ]
+  }
   render() {
 
-    let spiner = <div className="spiner-continer">
-      <div className="spinner">
-        <div className="lds-dual-ring">
-        </div>
-      </div>
-    </div>
+    if (this.state.isloading) {
+      return <Spiner />
+    }
 
     return (
-      <>{
-        this.state.isloading ?
-          spiner :
-          <div className="content">
-            <Row>
-              <Col lg="12">
-                <div className="header-div">
-                  <h1>World live Statistics</h1>
-                  {this.state.dataCovidGlobaly.updated
-                    &&
-                    <h4 style={{}} >
-                      last updated:
-                   {
-                        ' ' + new Date(this.state.dataCovidGlobaly.updated).toLocaleDateString("en-IE").substring(0, 4)
-                        + ' ' +
-                        new Date(this.state.dataCovidGlobaly.updated).toUTCString().substring(18, 22)
-                      }
-                    </h4>
-                  }
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg="2" className="centerDiv">
+      <>
+        <div className="content">
+          <Row>
+            <Col lg="12">
+              <div className="header-div">
+                <h1>World live Statistics</h1>
+                {
+                  this.getLastUpdated()
+                }
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            {this.getTopCards().map(({ title, value }) => {
+              return <Col lg="2">
                 <TopCard
-                  title={'Today Confirmed'}
-                  cardText={this.state.dataCovidGlobaly.todayCases}
+                  title={title}
+                  cardText={value}
                 />
               </Col>
-              <Col lg="2">
-                <TopCard
-                  title={'Total Confirmed'}
-                  cardText={this.state.dataCovidGlobaly.cases}
-                />
-              </Col>
-              <Col lg="2">
-                <TopCard
-                  title={'Total Recovered'}
-                  cardText={this.state.dataCovidGlobaly.recovered}
-                />
-              </Col>
-              <Col lg="2">
-                <TopCard
-                  title={'Today Deaths'}
-                  cardText={this.state.dataCovidGlobaly.todayDeaths}
-                />
-              </Col>
-              <Col lg="2">
-                <TopCard
-                  title={'Total Deaths'}
-                  cardText={this.state.dataCovidGlobaly.deaths}
-                />
-              </Col>
-              <Col lg="2">
-                <TopCard
-                  title={'critical '}
-                  critical
-                  cardText={this.state.dataCovidGlobaly.critical}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="12">
-                <ChartGlobalyDays
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col lg="4">
-                <ChartPie
-                  header={'Globaly'}
-                  globalData={this.state.dataCovidGlobaly}
-                />
-              </Col>
-              <Col lg="4">
-                <ChartPie
-                  header={'By continent'}
-                  continentsArr={this.state.continentArr}
-                />
-              </Col>
-              <Col lg="4">
-                <ChartPie
-                  header={'By country'}
-                  globalDataCountries={this.state.dataCovidCountries}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col lg="12" md="12">
-                <Showmap />
-              </Col>
-            </Row>
-            <Row>
-              <Col lg="12" md="12">
-                <Card>
-                  <CardBody>
-                    <TableList countries={this.state.countries} />
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-            <Footer />
-          </div >}
+            })}
+          </Row>
+          <Row>
+            <Col xs="12">
+              <ChartGlobalyDays />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="4">
+              <ChartPie
+                header={'Globaly'}
+                globalData={this.state.dataCovidGlobaly}
+              />
+            </Col>
+            <Col lg="4">
+              <ChartPie
+                header={'By continent'}
+                continentsArr={this.state.continentArr}
+              />
+            </Col>
+            <Col lg="4">
+              <ChartPie
+                header={'By country'}
+                globalDataCountries={this.state.dataCovidCountries}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="12" md="12">
+              <Showmap />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="12" md="12">
+              <Card>
+                <CardBody>
+                  <TableList countries={this.state.countries} />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          <Footer />
+        </div >
       </>
     );
   }

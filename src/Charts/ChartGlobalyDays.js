@@ -20,6 +20,22 @@ import {
     Col,
 } from "reactstrap";
 
+const defaultPieConfing = {
+    label: "Deaths",
+    fill: true,
+    borderColor: "red",
+    borderWidth: 2,
+    borderDash: [],
+    borderDashOffset: 0.0,
+    pointBackgroundColor: "red",
+    pointBorderColor: "rgba(255,255,255,0)",
+    pointHoverBackgroundColor: "#1f8ef1",
+    pointBorderWidth: 20,
+    pointHoverRadius: 4,
+    pointHoverBorderWidth: 15,
+    pointRadius: 4,
+}
+
 
 const ChartGlobalyDays = (props) => {
 
@@ -40,6 +56,7 @@ const ChartGlobalyDays = (props) => {
         handelSubmitSingleCountryChart();
     }, [bigChartDataFilter])
 
+
     const handelSubmitSingleCountryChart = async (e) => {
         if (bigChartDataFilter === 'combine') {
             const { dailyDataDate, dailyData } = await fetchTimeLineByFilter("deaths")
@@ -49,51 +66,21 @@ const ChartGlobalyDays = (props) => {
                 labels: dailyDataDate,
                 datasets: [
                     {
-                        label: "Deaths",
-                        fill: true,
-                        borderColor: "red",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
+                        ...defaultPieConfing,
+                        data: dailyData,
                         pointBackgroundColor: "red",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: dailyData
+                        borderColor: "red",
                     },
                     {
-                        label: "Recovered",
-                        fill: true,
+                        ...defaultPieConfing,
                         borderColor: "green",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
                         pointBackgroundColor: "green",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
                         data: recoverdData
                     },
                     {
-                        label: "Cases",
-                        fill: true,
+                        ...defaultPieConfing,
                         borderColor: "#1f8ef1",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
                         pointBackgroundColor: "#1f8ef1",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
                         data: casesData
                     }
                 ],
@@ -106,19 +93,10 @@ const ChartGlobalyDays = (props) => {
                 labels: dailyDataDate
                 , datasets: [
                     {
+                        ...defaultPieConfing,
                         label: bigChartDataFilter,
-                        fill: true,
                         borderColor: chartColor,
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
                         pointBackgroundColor: chartColor,
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
                         data: dailyData
                     }
                 ]
@@ -129,17 +107,18 @@ const ChartGlobalyDays = (props) => {
     const fetchTimeLineByFilter = async (filterBy) => {
         try {
             const historicalGlobalyData = await covidReqestes.historicalGlobaly();
-            let daily = historicalGlobalyData.data[`${filterBy}`]
+            let daily = historicalGlobalyData.data[filterBy]
             let dailyDataDate = []
             let dailyData = []
             for (let [key, value] of Object.entries(daily)) {
-                dailyDataDate.push(key)
+                dailyDataDate.push(new Date(key).toLocaleDateString("en-IE"))
                 dailyData.push(value)
             }
             return { dailyDataDate, dailyData }
         }
         catch (error) {
             console.log(error);
+            //404
         }
     }
 
@@ -151,18 +130,11 @@ const ChartGlobalyDays = (props) => {
     </div>
 
     const handleClick = (filter) => {
-        if (filter === "recovered") {
-            setbigChartDataFilter("recovered")
-            setChartColor("green")
-        }
-        else if (filter === "deaths") {
-            setbigChartDataFilter("deaths")
-            setChartColor("red")
-        } else {
-            setbigChartDataFilter("cases")
-            setChartColor("#1f8ef1")
-        }
+        const chartColor = { recovered: 'green', deaths: 'red', cases: '#1f8ef1' }
+        setbigChartDataFilter(filter)
+        setChartColor(chartColor[filter])
     }
+
 
     return (
         <Card className="card-chart">
@@ -173,111 +145,19 @@ const ChartGlobalyDays = (props) => {
                         <CardTitle tag="h2">Covid 19</CardTitle>
                     </Col>
                     <Col sm="6">
-                        <ButtonGroup
-                            className="btn-group-toggle float-right"
-                            data-toggle="buttons"
-                        >
-                            <Button
-                                tag="label"
-                                className={classNames("btn-simple", {
-                                    active: bigChartDataFilter === "combine"
-                                })}
-                                color="info"
-                                id="0"
-                                size="sm"
-                                onClick={() => setbigChartDataFilter("combine")}
-                            >
-                                <input
-                                    defaultChecked
-                                    className="d-none"
-                                    name="options"
-                                    type="radio"
-                                />
-                                <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                                    combine
-                               </span>
-                                <span className="d-block d-sm-none">
-                                    <FontAwesomeIcon icon={faSlidersH} />
-                                </span>
-                            </Button>
-                            <Button
-                                tag="label"
-                                className={classNames("btn-simple", {
-                                    active: bigChartDataFilter === "cases"
-                                })}
-                                color="info"
-                                id="0"
-                                size="sm"
-                                onClick={() => handleClick("cases")}
-                            >
-                                <input
-                                    defaultChecked
-                                    className="d-none"
-                                    name="options"
-                                    type="radio"
-                                />
-                                <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                                    Cases
-                               </span>
-                                <span className="d-block d-sm-none">
-                                    <FontAwesomeIcon icon={faBriefcaseMedical} />
-                                </span>
-                            </Button>
-                            <Button
-                                color="info"
-                                id="1"
-                                size="sm"
-                                tag="label"
-                                className={classNames("btn-simple", {
-                                    active: bigChartDataFilter === "deaths"
-                                })}
-                                onClick={() => handleClick("deaths")}
-                            >
-                                <input
-                                    className="d-none"
-                                    name="options"
-                                    type="radio"
-                                />
-                                <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                                    Deaths
-                                </span>
-                                <span className="d-block d-sm-none">
-                                    <FontAwesomeIcon icon={faSkullCrossbones} />
-                                </span>
-                            </Button>
-                            <Button
-                                color="info"
-                                id="2"
-                                size="sm"
-                                tag="label"
-                                className={classNames("btn-simple", {
-                                    active: bigChartDataFilter === "recovered"
-                                })}
-                                onClick={() => handleClick("recovered")}
-                            >
-                                <input
-                                    className="d-none"
-                                    name="options"
-                                    type="radio"
-                                />
-                                <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                                    Recovered
-                                </span>
-                                <span className="d-block d-sm-none">
-                                    <FontAwesomeIcon icon={faStethoscope} />
-                                </span>
-                            </Button>
-                        </ButtonGroup>
+                        <ButtonGroupChartTypeChooser value={bigChartDataFilter} onChange={handleClick} />
                     </Col>
                 </Row>
             </CardHeader>
             <CardBody>
                 <div className="chart-area">
-                    {!dataLine ? spiner
-                        : <Line
-                            options={chartExample3.options}
-                            data={dataLine}
-                        />}
+                    {
+                        !dataLine ? spiner
+                            : <Line
+                                options={chartExample3.options}
+                                data={dataLine}
+                            />
+                    }
                 </div>
             </CardBody>
         </Card>
@@ -288,3 +168,101 @@ export default ChartGlobalyDays;
 
 
 
+const ButtonGroupChartTypeChooser = ({ value, onChange }) => {
+    return <ButtonGroup
+        className="btn-group-toggle float-right"
+        data-toggle="buttons"
+    >
+        <Button
+            tag="label"
+            className={classNames("btn-simple", {
+                active: value === "combine"
+            })}
+            color="info"
+            id="0"
+            size="sm"
+            onClick={() => onChange("combine")}
+        >
+            <input
+                defaultChecked
+                className="d-none"
+                name="options"
+                type="radio"
+            />
+            <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                combine
+       </span>
+            <span className="d-block d-sm-none">
+                <FontAwesomeIcon icon={faSlidersH} />
+            </span>
+        </Button>
+        <Button
+            tag="label"
+            className={classNames("btn-simple", {
+                active: value === "cases"
+            })}
+            color="info"
+            id="0"
+            size="sm"
+            onClick={() => onChange("cases")}
+        >
+            <input
+                defaultChecked
+                className="d-none"
+                name="options"
+                type="radio"
+            />
+            <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                Cases
+       </span>
+            <span className="d-block d-sm-none">
+                <FontAwesomeIcon icon={faBriefcaseMedical} />
+            </span>
+        </Button>
+        <Button
+            color="info"
+            id="1"
+            size="sm"
+            tag="label"
+            className={classNames("btn-simple", {
+                active: value === "deaths"
+            })}
+            onClick={() => onChange("deaths")}
+        >
+            <input
+                className="d-none"
+                name="options"
+                type="radio"
+            />
+            <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                Deaths
+        </span>
+            <span className="d-block d-sm-none">
+                <FontAwesomeIcon icon={faSkullCrossbones} />
+            </span>
+        </Button>
+        <Button
+            color="info"
+            id="2"
+            size="sm"
+            tag="label"
+            className={classNames("btn-simple", {
+                active: value === "recovered"
+            })}
+            onClick={() => onChange("recovered")}
+        >
+            <input
+                className="d-none"
+                name="options"
+                type="radio"
+            />
+            <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                Recovered
+        </span>
+            <span className="d-block d-sm-none">
+                <FontAwesomeIcon icon={faStethoscope} />
+            </span>
+        </Button>
+    </ButtonGroup>
+
+}

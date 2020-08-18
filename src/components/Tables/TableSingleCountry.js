@@ -10,11 +10,14 @@ import {
 
 
 const TableSingleCountry = ({ countryData }) => {
+
     const changeText = (text) => {
         if (text !== undefined) {
             return text.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         }
     }
+    const { active, activePerOneMillion, cases, casesPerOneMillion, continent, critical, deaths } = countryData
+
     return (
         <>
             <div className="content">
@@ -34,13 +37,13 @@ const TableSingleCountry = ({ countryData }) => {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{changeText(countryData.active)}</td>
-                                    <td>{changeText(countryData.activePerOneMillion)}</td>
-                                    <td>{changeText(countryData.cases)}</td>
-                                    <td>{changeText(countryData.casesPerOneMillion)}</td>
-                                    <td>{changeText(countryData.continent)}</td>
-                                    <td>{changeText(countryData.critical)}</td>
-                                    <td>{changeText(countryData.deaths)}</td>
+                                    <td>{changeText(active)}</td>
+                                    <td>{changeText(activePerOneMillion)}</td>
+                                    <td>{changeText(cases)}</td>
+                                    <td>{changeText(casesPerOneMillion)}</td>
+                                    <td>{changeText(continent)}</td>
+                                    <td>{changeText(critical)}</td>
+                                    <td>{changeText(deaths)}</td>
                                 </tr>
                             </tbody>
                         </Table>

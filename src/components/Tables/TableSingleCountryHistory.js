@@ -26,7 +26,7 @@ const TableSingleCountryHistory = (props) => {
             const deaths = props.countryObjHistory['deaths'][key];
             const recovered = props.countryObjHistory['recovered'][key];
             return {
-                date: key,
+                date: new Date(key).toLocaleDateString("en-IE"),
                 cases: cases,
                 deaths: deaths,
                 recovered: recovered,
@@ -57,7 +57,7 @@ const TableSingleCountryHistory = (props) => {
                                 {countryHistoryByDate.map((c, index) => {
                                     return (
                                         <tr key={index}>
-                                            <td>{changeText(c.date)}</td>
+                                            <td>{c.date}</td>
                                             <td>{changeText(c.cases)}</td>
                                             <td>{changeText(c.deaths)}</td>
                                             <td>{changeText(c.recovered)}</td>

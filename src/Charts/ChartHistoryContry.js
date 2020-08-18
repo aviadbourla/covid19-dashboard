@@ -103,7 +103,7 @@ const ChartHistoryContry = (props) => {
             let dailyDataDate = []
             let dailyData = []
             for (let [key, value] of Object.entries(daily)) {
-                dailyDataDate.push(key)
+                dailyDataDate.push(new Date(key).toLocaleDateString("en-IE"))
                 dailyData.push(value)
             }
 
