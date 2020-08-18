@@ -24,6 +24,7 @@ import {
 const ChartGlobalyDays = (props) => {
 
     const [bigChartDataFilter, setbigChartDataFilter] = useState('combine')
+    const [chartColor, setChartColor] = useState('')
 
     const [dataLine, setdataLine] = useState({
         labels: [],
@@ -48,7 +49,7 @@ const ChartGlobalyDays = (props) => {
                 labels: dailyDataDate,
                 datasets: [
                     {
-                        label: "deaths",
+                        label: "Deaths",
                         fill: true,
                         borderColor: "red",
                         borderWidth: 2,
@@ -64,7 +65,7 @@ const ChartGlobalyDays = (props) => {
                         data: dailyData
                     },
                     {
-                        label: "recovered",
+                        label: "Recovered",
                         fill: true,
                         borderColor: "green",
                         borderWidth: 2,
@@ -80,7 +81,7 @@ const ChartGlobalyDays = (props) => {
                         data: recoverdData
                     },
                     {
-                        label: "cases",
+                        label: "Cases",
                         fill: true,
                         borderColor: "#1f8ef1",
                         borderWidth: 2,
@@ -107,11 +108,11 @@ const ChartGlobalyDays = (props) => {
                     {
                         label: bigChartDataFilter,
                         fill: true,
-                        borderColor: "#1f8ef1",
+                        borderColor: chartColor,
                         borderWidth: 2,
                         borderDash: [],
                         borderDashOffset: 0.0,
-                        pointBackgroundColor: "#1f8ef1",
+                        pointBackgroundColor: chartColor,
                         pointBorderColor: "rgba(255,255,255,0)",
                         pointHoverBackgroundColor: "#1f8ef1",
                         pointBorderWidth: 20,
@@ -148,6 +149,20 @@ const ChartGlobalyDays = (props) => {
             </div>
         </div>
     </div>
+
+    const handleClick = (filter) => {
+        if (filter === "recovered") {
+            setbigChartDataFilter("recovered")
+            setChartColor("green")
+        }
+        else if (filter === "deaths") {
+            setbigChartDataFilter("deaths")
+            setChartColor("red")
+        } else {
+            setbigChartDataFilter("cases")
+            setChartColor("#1f8ef1")
+        }
+    }
 
     return (
         <Card className="card-chart">
@@ -193,7 +208,7 @@ const ChartGlobalyDays = (props) => {
                                 color="info"
                                 id="0"
                                 size="sm"
-                                onClick={() => setbigChartDataFilter("cases")}
+                                onClick={() => handleClick("cases")}
                             >
                                 <input
                                     defaultChecked
@@ -216,7 +231,7 @@ const ChartGlobalyDays = (props) => {
                                 className={classNames("btn-simple", {
                                     active: bigChartDataFilter === "deaths"
                                 })}
-                                onClick={() => setbigChartDataFilter("deaths")}
+                                onClick={() => handleClick("deaths")}
                             >
                                 <input
                                     className="d-none"
@@ -238,7 +253,7 @@ const ChartGlobalyDays = (props) => {
                                 className={classNames("btn-simple", {
                                     active: bigChartDataFilter === "recovered"
                                 })}
-                                onClick={() => setbigChartDataFilter("recovered")}
+                                onClick={() => handleClick("recovered")}
                             >
                                 <input
                                     className="d-none"

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import './table.css'
 
 import {
     Table,
@@ -33,13 +34,17 @@ const TableSingleCountryHistory = (props) => {
         })
         setCountryHistoryByDate(temp)
     }
-
+    const changeText = (text) => {
+        if (text !== undefined) {
+            return text.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        }
+    }
     return (
         <>
             <div className="content">
                 <Row>
                     <Col md="12">
-                        <Table className="tablesorter" responsive  >
+                        <Table className="table-sticky" responsive  >
                             <thead className="text-primary">
                                 <tr>
                                     <th>Date</th>
@@ -52,10 +57,10 @@ const TableSingleCountryHistory = (props) => {
                                 {countryHistoryByDate.map((c, index) => {
                                     return (
                                         <tr key={index}>
-                                            <td>{c.date}</td>
-                                            <td>{c.cases}</td>
-                                            <td>{c.deaths}</td>
-                                            <td>{c.recovered}</td>
+                                            <td>{changeText(c.date)}</td>
+                                            <td>{changeText(c.cases)}</td>
+                                            <td>{changeText(c.deaths)}</td>
+                                            <td>{changeText(c.recovered)}</td>
                                         </tr>
                                     )
                                 })}

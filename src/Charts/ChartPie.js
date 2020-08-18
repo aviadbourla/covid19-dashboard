@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { chartExample3 } from "../varibales/charts.js";
+import { chartExample4 } from "../varibales/charts.js";
 
 import {
     Card,
@@ -116,16 +116,6 @@ const ChartPie = (props) => {
                     label: "deaths",
                     fill: true,
                     borderColor: "#1f8ef1",
-                    borderWidth: 0,
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    pointBackgroundColor: "#1f8ef1",
-                    pointBorderColor: "rgba(255,255,255,0)",
-                    pointHoverBackgroundColor: "#1f8ef1",
-                    pointBorderWidth: 20,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 15,
-                    pointRadius: 4,
                     data: filterChartValue,
                     backgroundColor: [
                         'rgb(60, 186, 146)',
@@ -153,17 +143,6 @@ const ChartPie = (props) => {
                 {
                     label: "deaths",
                     fill: true,
-                    borderColor: "#1f8ef1",
-                    borderWidth: 0,
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    pointBackgroundColor: "#1f8ef1",
-                    pointBorderColor: "rgba(255,255,255,0)",
-                    pointHoverBackgroundColor: "#1f8ef1",
-                    pointBorderWidth: 20,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 15,
-                    pointRadius: 4,
                     data: filterChartValue,
                     backgroundColor: [
                         'rgb(60, 186, 146)',
@@ -194,7 +173,7 @@ const ChartPie = (props) => {
             <>
                 <Dropdown isOpen={dropdownOpen} toggle={toggle} size="sm"  >
                     <DropdownToggle>
-                        {props.header === 'By continent' ? 'Chose continent' : 'Chose Country'}
+                        {props.header === 'By continent' ? 'Choose continent' : 'Choose Country'}
                     </DropdownToggle>
                     <DropdownMenu
                         modifiers={{
@@ -279,7 +258,22 @@ const ChartPie = (props) => {
                 <div className="chart-area">
                     {!dataPie ? spiner :
                         <Pie
-                            options={chartExample3.options}
+                            options={{
+                                maintainAspectRatio: false,
+
+                                legend: {
+                                    display: true,
+                                    position: 'right',
+                                    labels: {
+                                        boxWidth: 30,
+                                    }
+                                },
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true
+                                },
+                                responsive: true,
+                            }}
                             data={dataPie}
                         />
                     }

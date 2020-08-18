@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import './table.css'
 // reactstrap components
 import {
   FormGroup,
@@ -22,6 +23,9 @@ const TableList = (props) => {
 
   let filterArr = props ? props.countries.filter(c => c.Country.includes(filterBy)) : [];
 
+  const changeText = (text) => {
+    return text.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+  }
   return (
     <>
       <form>
@@ -35,8 +39,8 @@ const TableList = (props) => {
           />
         </FormGroup>
       </form>
-      <Table className="tablesorter" responsive     >
-        <thead className="text-primary" >
+      <Table responsive className="table-sticky"    >
+        <thead className="text-primary"  >
           <tr>
             <th>Country</th>
             <th>New Confirmed</th>
@@ -51,10 +55,10 @@ const TableList = (props) => {
               return (
                 <tr key={key}>
                   <td>{c.Country}</td>
-                  <td>{c.NewConfirmed}</td>
-                  <td>{c.TotalConfirmed}</td>
-                  <td>{c.NewDeaths}</td>
-                  <td >{c.TotalDeaths}</td>
+                  <td>{changeText(c.NewConfirmed)}</td>
+                  <td>{changeText(c.TotalConfirmed)}</td>
+                  <td>{changeText(c.NewDeaths)}</td>
+                  <td >{changeText(c.TotalDeaths)}</td>
                 </tr>
               )
             })}

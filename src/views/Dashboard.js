@@ -85,10 +85,10 @@ class Dashboard extends React.Component {
                     <h4 style={{}} >
                       last updated:
                    {
-                        ' ' + new Date(this.state.dataCovidGlobaly.updated).toLocaleDateString().substring(0, 4)
+                        ' ' + new Date(this.state.dataCovidGlobaly.updated).toLocaleDateString("en-IE").substring(0, 4)
                         + ' ' +
                         new Date(this.state.dataCovidGlobaly.updated).toUTCString().substring(18, 22)
-                   }
+                      }
                     </h4>
                   }
                 </div>

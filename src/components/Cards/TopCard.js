@@ -5,9 +5,10 @@ import {
     CardHeader,
     CardBody,
     CardText,
+    CardImg
 
 } from "reactstrap";
-
+import PortableWifiOffIcon from '@material-ui/icons/PortableWifiOff';
 let spiner = <div className="spiner-continer">
     <div className="spinner">
         <div className="lds-dual-ring">
@@ -24,13 +25,17 @@ const TopCard = (props) => {
                         {props.title}
                     </h3>
                 </CardHeader>
-                <CardBody>
-                    <CardText className="cardText">
+                <CardBody >
+                    <CardText className="cardText"  >
                         {
                             props.cardText ?
                                 props.cardText.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
                                 :
-                                <p>problem fech Data</p>
+                                <div  >
+                                    <PortableWifiOffIcon fontSize="large" />
+                                    <p style={{ fontSize: '20px', display: 'inline' }}> No data  </p>
+                                </div>
+
                         }
                     </CardText>
                 </CardBody>

@@ -1,0 +1,5 @@
+.table-sticky th {
+  position: sticky;
+  top: 0;
+  background: #71788a;
+}
