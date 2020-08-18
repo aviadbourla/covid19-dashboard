@@ -5,6 +5,8 @@ import ChartHistoryContry from '../Charts/ChartHistoryContry'
 import TopCard from '../components/Cards/TopCard'
 import { useHistory } from "react-router-dom";
 import covidReqestes from '../HttpReq/covidReqestes'
+import Footer from "components/Footer/Footer.js";
+
 
 import {
     Card,
@@ -127,6 +129,7 @@ const DashboardCountry = (props) => {
                         </Card>
                     </Col>
                 </Row>
+                <Footer />
             </div>
         </>
     );

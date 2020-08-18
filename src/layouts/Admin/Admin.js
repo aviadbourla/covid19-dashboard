@@ -2,7 +2,8 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import Footer from "components/Footer/Footer.js";
+
+
 import routes from "routes.js";
 
 
@@ -40,7 +41,6 @@ class Admin extends React.Component {
               {this.getRoutes(routes)}
               <Redirect from="*" to="/admin/dashboard" />
             </Switch>
-            <Footer />
           </div>
         </div>
       </>

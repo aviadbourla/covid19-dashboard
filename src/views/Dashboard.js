@@ -7,7 +7,7 @@ import TopCard from '../components/Cards/TopCard'
 import covidReqestes from '../HttpReq/covidReqestes'
 import Showmap from "components/Map/Showmap";
 import './dashboard.css'
-
+import Footer from "components/Footer/Footer.js";
 // reactstrap components
 import {
   Card,
@@ -173,6 +173,7 @@ class Dashboard extends React.Component {
                 </Card>
               </Col>
             </Row>
+            <Footer />
           </div >}
       </>
     );
