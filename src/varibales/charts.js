@@ -7,13 +7,19 @@ let chartExample3 = {
     },
     tooltips: {
       backgroundColor: "#f5f5f5",
-      titleFontColor: "#333",
-      bodyFontColor: "#666",
-      bodySpacing: 4,
+      titleFontColor: "#666",
+      bodyFontColor: "#333",
       xPadding: 12,
       mode: "nearest",
       intersect: 0,
-      position: "nearest"
+      position: "nearest",
+      bodyFontSize: 16,
+      titleFontSize: 16,
+      callbacks: {
+        label: function (tooltipItem) {
+          return tooltipItem.yLabel.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        }
+      }
     },
     responsive: true,
     scales: {
@@ -66,6 +72,25 @@ const chartExample4 = {
       position: 'right',
       labels: {
         boxWidth: 30,
+      }
+    },
+    tooltips: {
+      backgroundColor: "#f5f5f5",
+      titleFontColor: "#333",
+      bodyFontColor: "#666",
+      bodySpacing: 4,
+      xPadding: 12,
+      intersect: 0,
+      position: "nearest",
+      titleFontSize: 22,
+      bodyFontSize: 16,
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var dataset = data.datasets[tooltipItem.datasetIndex];
+          let currentValue = dataset.data[tooltipItem.index];
+          let cureentValueTitle = (data.labels[tooltipItem.index])
+          return ' ' + currentValue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' ' + cureentValueTitle
+        }
       }
     },
     title: {

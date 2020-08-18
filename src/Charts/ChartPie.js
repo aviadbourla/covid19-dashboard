@@ -73,7 +73,7 @@ const ChartPie = (props) => {
                     labels: filterChart,
                     datasets: [
                         {
-                            label: "deaths",
+                            label: "pie",
                             fill: true,
                             borderColor: "#1f8ef1",
                             borderWidth: 0,
@@ -113,7 +113,7 @@ const ChartPie = (props) => {
             labels: filterChart,
             datasets: [
                 {
-                    label: "deaths",
+                    label: "pie",
                     fill: true,
                     borderColor: "#1f8ef1",
                     data: filterChartValue,
@@ -133,15 +133,17 @@ const ChartPie = (props) => {
         const countryObjTemp = countryObjFun(e.target.value)
         setCountry(e.target.value)
         let filterChartValue =
-            [countryObjTemp['active'],
-            countryObjTemp['cases'],
-            countryObjTemp['deaths'],
-            countryObjTemp['recovered']];
+            [
+                countryObjTemp['active'],
+                countryObjTemp['cases'],
+                countryObjTemp['deaths'],
+                countryObjTemp['recovered']]
+            ;
         setdataPie({
             labels: filterChart,
             datasets: [
                 {
-                    label: "deaths",
+                    label: "pie",
                     fill: true,
                     data: filterChartValue,
                     backgroundColor: [
@@ -173,7 +175,7 @@ const ChartPie = (props) => {
             <>
                 <Dropdown isOpen={dropdownOpen} toggle={toggle} size="sm"  >
                     <DropdownToggle>
-                        {props.header === 'By continent' ? 'Choose continent' : 'Choose Country'}
+                        {props.header === 'By continent' ? 'Chose continent' : 'Choose Country'}
                     </DropdownToggle>
                     <DropdownMenu
                         modifiers={{
@@ -258,22 +260,7 @@ const ChartPie = (props) => {
                 <div className="chart-area">
                     {!dataPie ? spiner :
                         <Pie
-                            options={{
-                                maintainAspectRatio: false,
-
-                                legend: {
-                                    display: true,
-                                    position: 'right',
-                                    labels: {
-                                        boxWidth: 30,
-                                    }
-                                },
-                                animation: {
-                                    animateScale: true,
-                                    animateRotate: true
-                                },
-                                responsive: true,
-                            }}
+                            options={chartExample4.options}
                             data={dataPie}
                         />
                     }
