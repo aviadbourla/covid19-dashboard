@@ -20,6 +20,11 @@ import {
 
 
 const ChartHistoryContry = (props) => {
+
+
+    const [bigChartData, setbigChartDataFilter] = useState('combine')
+    const [chartColor, setChartColor] = useState('')
+
     const [dataLine, setdataLine] = useState({
         labels: [],
         datasets: [{
@@ -29,67 +34,8 @@ const ChartHistoryContry = (props) => {
             data: []
         }]
     })
-    const [bigChartData, setbigChartData] = useState('combine')
 
     const { country } = useParams();
-
-    useEffect(() => {
-        async function createLine() {
-            const { dailyDataDate, dailyData } = await fetchTimeLineByCountry("deaths")
-            const { dailyData: recoverdData } = await fetchTimeLineByCountry("recovered")
-            const { dailyData: casesData } = await fetchTimeLineByCountry("cases")
-
-            setdataLine({
-                labels: dailyDataDate,
-                datasets: [
-                    {
-                        label: "deaths",
-                        fill: true,
-                        borderColor: "#1f8ef1",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#1f8ef1",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: dailyData
-                    },
-                    {
-                        label: "recovered",
-                        fill: true,
-                        borderColor: "red",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "red",
-                        pointBorderColor: "red",
-                        pointHoverBackgroundColor: "red",
-                        pointHoverBorderWidth: 15,
-                        data: recoverdData
-                    },
-                    {
-                        label: "cases",
-                        fill: true,
-                        borderColor: "green",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "green",
-                        pointBorderColor: "green",
-                        pointHoverBackgroundColor: "green",
-                        pointHoverBorderWidth: 15,
-                        data: casesData
-                    }
-                ],
-            },
-            )
-        }
-        createLine();
-    }, []);
 
     useEffect(() => {
         handelSubmitSingleCountryChart();
@@ -108,15 +54,7 @@ const ChartHistoryContry = (props) => {
                         label: "deaths",
                         fill: true,
                         borderColor: "red",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
                         pointBackgroundColor: "red",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
                         pointRadius: 4,
                         data: dailyData
                     },
@@ -124,15 +62,7 @@ const ChartHistoryContry = (props) => {
                         label: "recovered",
                         fill: true,
                         borderColor: "green",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
                         pointBackgroundColor: "green",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
                         pointRadius: 4,
                         data: recoverdData
                     },
@@ -140,15 +70,7 @@ const ChartHistoryContry = (props) => {
                         label: "cases",
                         fill: true,
                         borderColor: "#1f8ef1",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
                         pointBackgroundColor: "#1f8ef1",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
                         pointRadius: 4,
                         data: casesData
                     }
@@ -164,15 +86,7 @@ const ChartHistoryContry = (props) => {
                     {
                         label: bigChartData,
                         fill: true,
-                        borderColor: "#1f8ef1",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#1f8ef1",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1f8ef1",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
+                        borderColor: chartColor,
                         pointHoverBorderWidth: 15,
                         pointRadius: 4,
                         data: dailyData
@@ -200,6 +114,20 @@ const ChartHistoryContry = (props) => {
         }
     }
 
+    const handleClick = (filter) => {
+        if (filter === "recovered") {
+            setbigChartDataFilter("recovered")
+            setChartColor("green")
+        }
+        else if (filter === "deaths") {
+            setbigChartDataFilter("deaths")
+            setChartColor("red")
+        } else {
+            setbigChartDataFilter("cases")
+            setChartColor("#1f8ef1")
+        }
+    }
+
     return (
         <Card className="card-chart">
             <CardHeader>
@@ -221,7 +149,7 @@ const ChartHistoryContry = (props) => {
                                 color="info"
                                 id="0"
                                 size="sm"
-                                onClick={() => setbigChartData("combine")}
+                                onClick={() => handleClick("combine")}
                             >
                                 <input
                                     defaultChecked
@@ -244,7 +172,7 @@ const ChartHistoryContry = (props) => {
                                 color="info"
                                 id="0"
                                 size="sm"
-                                onClick={() => setbigChartData("cases")}
+                                onClick={() => handleClick("cases")}
                             >
                                 <input
                                     defaultChecked
@@ -267,7 +195,7 @@ const ChartHistoryContry = (props) => {
                                 className={classNames("btn-simple", {
                                     active: bigChartData === "deaths"
                                 })}
-                                onClick={() => setbigChartData("deaths")}
+                                onClick={() => handleClick("deaths")}
                             >
                                 <input
                                     className="d-none"
@@ -289,7 +217,7 @@ const ChartHistoryContry = (props) => {
                                 className={classNames("btn-simple", {
                                     active: bigChartData === "recovered"
                                 })}
-                                onClick={() => setbigChartData("recovered")}
+                                onClick={() => handleClick("recovered")}
                             >
                                 <input
                                     className="d-none"
