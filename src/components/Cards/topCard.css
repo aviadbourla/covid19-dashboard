@@ -1,0 +1,16 @@
+.topCard {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  font-weight: 600;
+}
+
+.h3Card {
+  font-size: 1.1rem;
+}
+
+.cardText {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
