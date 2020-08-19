@@ -28,48 +28,50 @@ const ChartPieGlobaly = (props) => {
         }]
     })
 
+
     useEffect(() => {
-        async function createLine() {
-            try {
-                const respone = await covidReqestes.getAll()
-                setDataCovidGlobaly(respone.data)
-                setisLoading(false)
-                let filterChartValue =
-                    [
-                        dataCovidGlobaly['active'],
-                        dataCovidGlobaly['cases'],
-                        dataCovidGlobaly['deaths'],
-                        dataCovidGlobaly['recovered']
-                    ];
+        createLine()
+    }, []);
 
-                setdataPie({
-                    labels: filterChart,
-                    datasets: [
-                        {
-                            label: "pie",
-                            fill: true,
-                            borderColor: "#1f8ef1",
-                            borderWidth: 0,
-                            borderDash: [],
-                            borderDashOffset: 0.0,
-                            data: filterChartValue,
-                            backgroundColor: [
-                                'rgb(60, 186, 146)',
-                                'rgb(27, 85, 130)',
-                                'rgb(231, 81, 90)',
-                                'rgb(226, 160, 63)',
-                            ],
-                        },
-                    ],
-                },
-                )
-            } catch (e) {
-                setEror(true)
-            }
+    const createLine = async () => {
+        try {
+            const respone = await covidReqestes.getAll()
+            let dataTempGlobaly = respone.data
+            setDataCovidGlobaly(respone.data)
+            setisLoading(false)
+            let filterChartValue =
+                [
+                    dataTempGlobaly['active'],
+                    dataTempGlobaly['cases'],
+                    dataTempGlobaly['deaths'],
+                    dataTempGlobaly['recovered']
+                ];
+
+            setdataPie({
+                labels: filterChart,
+                datasets: [
+                    {
+                        label: "pie",
+                        fill: true,
+                        borderColor: "#1f8ef1",
+                        borderWidth: 0,
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        data: filterChartValue,
+                        backgroundColor: [
+                            'rgb(60, 186, 146)',
+                            'rgb(27, 85, 130)',
+                            'rgb(231, 81, 90)',
+                            'rgb(226, 160, 63)',
+                        ],
+                    },
+                ],
+            },
+            )
+        } catch (e) {
+            setEror(true)
         }
-        createLine();
-    }, [dataCovidGlobaly]);
-
+    }
 
     return (
         <Card className="card-chart">
