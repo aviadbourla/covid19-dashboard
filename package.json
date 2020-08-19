@@ -23,6 +23,7 @@
     "react-dom": "16.13.0",
     "react-google-maps": "9.4.5",
     "react-leaflet": "^2.7.0",
+    "react-leaflet-enhanced-marker": "^1.0.17",
     "react-notification-alert": "0.0.12",
     "react-router-dom": "5.1.2",
     "react-scripts": "3.4.0",

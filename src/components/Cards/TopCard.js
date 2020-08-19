@@ -5,16 +5,8 @@ import {
     CardHeader,
     CardBody,
     CardText,
-    CardImg
-
 } from "reactstrap";
 import PortableWifiOffIcon from '@material-ui/icons/PortableWifiOff';
-let spiner = <div className="spiner-continer">
-    <div className="spinner">
-        <div className="lds-dual-ring">
-        </div>
-    </div>
-</div>
 
 const TopCard = ({ title, cardText }) => {
     return (

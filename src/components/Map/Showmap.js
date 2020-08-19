@@ -3,7 +3,7 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import Cardui from './Cardui'
 import { Card, Row, Col } from "reactstrap";
 import covidReqestes from '../../HttpReq/covidReqestes'
-import Spiner from '../Spiner/spiner'
+import Spiner from '../Spiner/Spiner'
 
 import './map.css';
 
@@ -19,6 +19,7 @@ const Showmap = () => {
     const [countries, setCountries] = useState([])
     const [activeCountry, setActiveCountry] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [eror, setEror] = useState(false)
 
     useEffect(() => {
         mapEffect();
@@ -31,20 +32,17 @@ const Showmap = () => {
             setCountries(data)
         } catch (e) {
             console.log(`Failed to fetch countries: ${e.message}`, e);
-            //404
-            return;
+            setEror(true);
         } finally {
             setIsLoading(false)
         }
     }
 
-
-
     let content = <Spiner />
 
     const { country, cases, deaths, recovered, todayRecovered, active, countryInfo } = activeCountry || {}
 
-    if (!isLoading) {
+    if (!isLoading && !eror) {
         content = <Map {...mapSettings} >
             <TileLayer
                 url={mapSettings.tileLayerUrl}
@@ -83,11 +81,15 @@ const Showmap = () => {
         </Map>
     }
 
+    if (isLoading || eror) {
+        return <Spiner />
+    }
+
     return (
         <div className="content">
             <Row>
                 <Col md="12">
-                    <Card>
+                    <Card className="card-body-map">
                         {
                             content
                         }

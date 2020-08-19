@@ -8,6 +8,7 @@ import { faBriefcaseMedical } from '@fortawesome/free-solid-svg-icons'
 import { faStethoscope } from '@fortawesome/free-solid-svg-icons'
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons'
 import { chartExample3 } from "../varibales/charts.js";
+import Spiner from '../components/Spiner/Spiner'
 
 import {
     Button,
@@ -41,6 +42,8 @@ const ChartGlobalyDays = (props) => {
 
     const [bigChartDataFilter, setbigChartDataFilter] = useState('combine')
     const [chartColor, setChartColor] = useState('')
+    const [isLoading, setisLoading] = useState(true);
+    const [eror, setEror] = useState(false)
 
     const [dataLine, setdataLine] = useState({
         labels: [],
@@ -114,23 +117,21 @@ const ChartGlobalyDays = (props) => {
                 dailyDataDate.push(new Date(key).toLocaleDateString("en-IE"))
                 dailyData.push(value)
             }
+            setisLoading(false)
             return { dailyDataDate, dailyData }
         }
         catch (error) {
-            console.log(error);
-            //404
+            setEror(true)
         }
     }
 
-    let spiner = <div className="spiner-continer">
-        <div className="spinner">
-            <div className="lds-dual-ring">
-            </div>
-        </div>
-    </div>
-
     const handleClick = (filter) => {
-        const chartColor = { recovered: 'green', deaths: 'red', cases: '#1f8ef1' }
+        const chartColor =
+        {
+            recovered: 'green',
+            deaths: 'red',
+            cases: '#1f8ef1'
+        }
         setbigChartDataFilter(filter)
         setChartColor(chartColor[filter])
     }
@@ -152,7 +153,7 @@ const ChartGlobalyDays = (props) => {
             <CardBody>
                 <div className="chart-area">
                     {
-                        !dataLine ? spiner
+                        isLoading || eror ? <Spiner />
                             : <Line
                                 options={chartExample3.options}
                                 data={dataLine}

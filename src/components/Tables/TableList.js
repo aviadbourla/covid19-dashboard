@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
-import Spiner from '../Spiner/spiner'
+import Spiner from '../Spiner/Spiner'
+import covidReqestes from '../../HttpReq/covidReqestes'
 import './table.css'
 // reactstrap components
 import {
@@ -13,16 +14,36 @@ import {
 const TableList = (props) => {
 
   const [filterBy, setFilterBy] = useState('');
+  const [countriesArr, setCountriesArr] = useState([]);
+  const [isLoading, setisLoading] = useState(true);
+  const [eror, setEror] = useState(false)
+
+
 
   const changeText = (text) => {
     return text.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
 
-  if (!props.countries) {
-    return <Spiner />
+  useEffect(() => {
+    getDataApi();
+  }, [])
+
+  const getDataApi = async () => {
+    try {
+      const respone = await covidReqestes.getCountriesArr()
+      setCountriesArr(respone.data)
+      setisLoading(false)
+    } catch (e) {
+      setEror(true);
+    }
   }
 
-  let filterArr = props.countries.filter(c => c.Country.includes(filterBy))
+  let filterArr = countriesArr.filter(c => c.country.includes(filterBy))
+
+
+  if (isLoading || eror) {
+    return <Spiner />
+  }
 
   return (
     <>
@@ -41,21 +62,31 @@ const TableList = (props) => {
         <thead className="text-primary"  >
           <tr>
             <th>Country</th>
-            <th>New Confirmed</th>
-            <th>Total Confirme</th>
-            <th>New Deaths</th>
-            <th>Total Deaths</th>
+            <th>continent</th>
+            <th>active</th>
+            <th>active Per 1M</th>
+            <th>cases</th>
+            <th>cases Per 1M</th>
+            <th>critical</th>
+            <th>deaths</th>
+            <th>deaths Per 1M</th>
+            <th>population</th>
           </tr>
         </thead>
         <tbody> {
           filterArr.map((c, key) => {
             return (
               <tr key={key}>
-                <td>{c.Country}</td>
-                <td>{changeText(c.NewConfirmed)}</td>
-                <td>{changeText(c.TotalConfirmed)}</td>
-                <td>{changeText(c.NewDeaths)}</td>
-                <td >{changeText(c.TotalDeaths)}</td>
+                <td>{c.country}</td>
+                <td>{c.continent}</td>
+                <td>{changeText(c.active)}</td>
+                <td>{changeText(c.activePerOneMillion)}</td>
+                <td>{changeText(c.cases)}</td>
+                <td>{changeText(c.casesPerOneMillion)}</td>
+                <td >{changeText(c.critical)}</td>
+                <td >{changeText(c.deaths)}</td>
+                <td >{changeText(c.deathsPerOneMillion)}</td>
+                <td >{changeText(c.population)}</td>
               </tr>
             )
           })}
