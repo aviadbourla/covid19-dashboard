@@ -8,7 +8,7 @@ import { faBriefcaseMedical } from '@fortawesome/free-solid-svg-icons'
 import { faStethoscope } from '@fortawesome/free-solid-svg-icons'
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons'
 import { chartExample3 } from "../varibales/charts.js";
-import Spiner from '../components/Spiner/Spiner'
+import ShowSpiner from '../components/Spiner/ShowSpiner'
 
 import {
     Button,
@@ -153,7 +153,7 @@ const ChartGlobalyDays = (props) => {
             <CardBody>
                 <div className="chart-area">
                     {
-                        isLoading || eror ? <Spiner />
+                        isLoading || eror ? <ShowSpiner />
                             : <Line
                                 options={chartExample3.options}
                                 data={dataLine}

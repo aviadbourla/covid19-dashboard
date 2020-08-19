@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import Spiner from '../Spiner/Spiner'
+import ShowSpiner from '../Spiner/ShowSpiner'
 import covidReqestes from '../../HttpReq/covidReqestes'
 import './table.css'
 // reactstrap components
@@ -42,7 +42,7 @@ const TableList = (props) => {
 
 
   if (isLoading || eror) {
-    return <Spiner />
+    return <ShowSpiner />
   }
 
   return (

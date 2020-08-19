@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { chartExample4 } from "../varibales/charts.js";
-import Spiner from '../components/Spiner/Spiner'
+import ShowSpiner from '../components/Spiner/ShowSpiner'
 import covidReqestes from '../HttpReq/covidReqestes'
 
 import {
@@ -82,7 +82,7 @@ const ChartPieGlobaly = (props) => {
             </CardHeader>
             <CardBody>
                 <div className="chart-area">
-                    {eror || isLoading ? <Spiner /> :
+                    {eror || isLoading ? <ShowSpiner /> :
                         <Pie
                             options={chartExample4.options}
                             data={dataPie}

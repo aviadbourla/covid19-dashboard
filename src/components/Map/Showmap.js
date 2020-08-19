@@ -3,7 +3,7 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import Cardui from './Cardui'
 import { Card, Row, Col } from "reactstrap";
 import covidReqestes from '../../HttpReq/covidReqestes'
-import Spiner from '../Spiner/Spiner'
+import ShowSpiner from '../Spiner/ShowSpiner'
 
 import './map.css';
 
@@ -38,7 +38,7 @@ const Showmap = () => {
         }
     }
 
-    let content = <Spiner />
+    let content = <ShowSpiner />
 
     const { country, cases, deaths, recovered, todayRecovered, active, countryInfo } = activeCountry || {}
 
@@ -82,7 +82,7 @@ const Showmap = () => {
     }
 
     if (isLoading || eror) {
-        return <Spiner />
+        return <ShowSpiner />
     }
 
     return (

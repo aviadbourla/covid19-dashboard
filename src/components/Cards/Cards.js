@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import covidReqestes from '../../HttpReq/covidReqestes'
 import TopCard from './TopCard'
-import Spiner from '../Spiner/Spiner'
+import ShowSpiner from '../Spiner/ShowSpiner'
 import './topCard.css'
 import {
     Col
