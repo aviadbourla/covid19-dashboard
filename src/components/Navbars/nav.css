@@ -8,10 +8,32 @@
 }
 .modal-content {
   flex-direction: row !important;
-  display: flex !important;
-  justify-content: space-between !important;
 }
 .rbt-menu {
   width: 1000px !important;
-  height: 150px !important;
+  max-height: 150px !important;
+}
+.links-div {
+  display: flex;
+}
+.d-lg-none {
+  text-transform: capitalize !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .modal-content {
+    bottom: 20px !important;
+  }
+  .nav {
+    display: flex !important;
+  }
+  .d-lg-none {
+    padding-right: 10px !important;
+  }
+}
+.MuiSvgIcon-root {
+  margin-left: 10px !important;
+}
+a {
+  display: flex !important ;
 }

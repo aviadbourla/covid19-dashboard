@@ -17,6 +17,7 @@ import {
   Nav,
   Container,
   Modal,
+  NavItem
 } from "reactstrap";
 import './nav.css'
 const contriesNamesArrHardCoded = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Cayman Islands", "Central African Republic", "Chad", "Channel Islands", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Curaçao", "Cyprus", "Czechia", "Côte d'Ivoire", "DRC", "Denmark", "Diamond Princess", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kuwait", "Kyrgyzstan", "Lao People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "MS Zaandam", "Macao", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nepal", "Netherlands", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Réunion", "S. Korea", "Saint Kitts and Nevis", "Saint Lucia", "Saint Martin", "Saint Pierre Miquelon", "Saint Vincent and the Grenadines", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten", "Slovakia", "Slovenia", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "St. Barth", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Trinidad and Tobago", "Tunisia", "Turkey", "Turks and Caicos Islands", "UAE", "UK", "USA", "Uganda", "Ukraine", "Uruguay", "Uzbekistan", "Venezuela", "Vietnam", "Western Sahara", "Yemen", "Zambia", "Zimbabwe"]
@@ -33,19 +34,23 @@ class AdminNavbar extends React.Component {
   }
   // this function opens and closes the collapse on small devices
   toggleCollapse = () => {
-    if (this.state.collapseOpen) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      if (this.state.collapseOpen) {
+        this.setState({
+          color: "navbar-transparent"
+        });
+      } else {
+        this.setState({
+          color: "bg-white"
+        });
+      }
       this.setState({
-        color: "navbar-transparent"
-      });
-    } else {
-      this.setState({
-        color: "bg-white"
+        collapseOpen: !this.state.collapseOpen
       });
     }
-    this.setState({
-      collapseOpen: !this.state.collapseOpen
-    });
+
   };
+
 
   // this function is to open the Search modal
   toggleModalSearch = () => {
@@ -55,6 +60,7 @@ class AdminNavbar extends React.Component {
   };
 
   goCountryDashBoard = () => {
+    this.toggleModalSearch()
     this.props.history.push(`/admin/countryDashboard/${this.state.filterCountry}`)
   }
 
@@ -81,13 +87,17 @@ class AdminNavbar extends React.Component {
               <span className="navbar-toggler-bar navbar-kebab" />
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
-              <Nav />
-              <div style={{ display: 'flex' }}>
-                <NavLink href="/admin/dashboard"><HomeIcon />  </NavLink>
-                <NavLink href="https://www.linkedin.com/in/aviad-bourla/"><LinkedInIcon /></NavLink>
-                <NavLink href="https://github.com/aviadbourla"> <GitHubIcon /></NavLink>
+              <div className="links-div">
+                <NavLink href="/admin/dashboard" >
+                  Home  <HomeIcon />
+                </NavLink>
+                <NavLink href="https://www.linkedin.com/in/aviad-bourla/">
+                  LinkedIn<LinkedInIcon />
+                </NavLink>
+                <NavLink href="https://github.com/aviadbourla">
+                  github <GitHubIcon />
+                </NavLink>
               </div>
-              <Nav />
               <Nav className="ml-auto" navbar>
                 <InputGroup className="search-bar">
                   <Button
@@ -96,20 +106,21 @@ class AdminNavbar extends React.Component {
                     data-toggle="modal"
                     id="search-button"
                     onClick={this.toggleModalSearch}
+                    style={{ margin: '0 auto' }}
                   >
-                    <i className="tim-icons icon-zoom-split" />
                     <span className="d-lg-none d-md-block">Search by country</span>
+                    <i className="tim-icons icon-zoom-split" />
                   </Button>
                 </InputGroup>
               </Nav>
             </Collapse>
           </Container>
         </Navbar>
-
         <Modal
           modalClassName="modal-search"
           isOpen={this.state.modalSearch}
           toggle={this.toggleModalSearch}
+          onOpened={this.toggleCollapse}
         >
           <Typeahead
             id="pagination-example"
