@@ -30,10 +30,16 @@
   .d-lg-none {
     padding-right: 10px !important;
   }
+  .container-fluid {
+    padding: 0 !important;
+  }
 }
 .MuiSvgIcon-root {
   margin-left: 10px !important;
 }
 a {
   display: flex !important ;
+}
+.MuiSvgIcon-fontSizeLarge {
+  margin: 0 !important;
 }

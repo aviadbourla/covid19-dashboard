@@ -3,7 +3,7 @@
   flex-direction: row;
   align-content: center;
   justify-content: center;
-  padding-bottom: 2rem;
+  padding-bottom: 0 !important;
 
   [class*="container-"] {
     padding: 0;
@@ -13,7 +13,7 @@
     display: inline-block;
     float: left;
     margin-bottom: 0;
-    padding-left: 30px;
+    padding-left: 0 !important;
     list-style: none;
   }
 

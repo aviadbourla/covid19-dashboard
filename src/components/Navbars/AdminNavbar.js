@@ -6,6 +6,7 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import HomeIcon from '@material-ui/icons/Home';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import MenuIcon from '@material-ui/icons/Menu';
 // reactstrap components
 import {
   Button,
@@ -82,9 +83,8 @@ class AdminNavbar extends React.Component {
               type="button"
               onClick={this.toggleCollapse}
             >
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
+              <MenuIcon color="primary" fontSize="large" />
+
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <div className="links-div">
