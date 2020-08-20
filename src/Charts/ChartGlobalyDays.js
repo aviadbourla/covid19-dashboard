@@ -61,68 +61,69 @@ const ChartGlobalyDays = (props) => {
 
 
     const handelSubmitSingleCountryChart = async (e) => {
-        if (bigChartDataFilter === 'combine') {
-            const { dailyDataDate, dailyData } = await fetchTimeLineByFilter("deaths")
-            const { dailyData: recoverdData } = await fetchTimeLineByFilter("recovered")
-            const { dailyData: casesData } = await fetchTimeLineByFilter("cases")
-            setdataLine({
-                labels: dailyDataDate,
-                datasets: [
-                    {
-                        ...defaultPieConfing,
-                        data: dailyData,
-                        pointBackgroundColor: "red",
-                        borderColor: "red",
-                    },
-                    {
-                        ...defaultPieConfing,
-                        borderColor: "green",
-                        pointBackgroundColor: "green",
-                        data: recoverdData
-                    },
-                    {
-                        ...defaultPieConfing,
-                        borderColor: "#1f8ef1",
-                        pointBackgroundColor: "#1f8ef1",
-                        data: casesData
-                    }
-                ],
-            },
-            )
-        }
-        else {
-            const { dailyDataDate, dailyData } = await fetchTimeLineByFilter(bigChartDataFilter)
-            setdataLine({
-                labels: dailyDataDate
-                , datasets: [
-                    {
-                        ...defaultPieConfing,
-                        label: bigChartDataFilter,
-                        borderColor: chartColor,
-                        pointBackgroundColor: chartColor,
-                        data: dailyData
-                    }
-                ]
-            })
+        try {
+            const response4 = await covidReqestes.historicalGlobaly();
+            if (bigChartDataFilter === 'combine') {
+                const { dailyDataDate, dailyData } = fetchTimeLineByFilter("deaths", response4.data)
+                const { dailyData: recoverdData } = fetchTimeLineByFilter("recovered", response4.data)
+                const { dailyData: casesData } = fetchTimeLineByFilter("cases", response4.data)
+                setdataLine({
+                    labels: dailyDataDate,
+                    datasets: [
+                        {
+                            ...defaultPieConfing,
+                            data: dailyData,
+                            pointBackgroundColor: "red",
+                            borderColor: "red",
+                        },
+                        {
+                            ...defaultPieConfing,
+                            borderColor: "green",
+                            pointBackgroundColor: "green",
+                            data: recoverdData
+                        },
+                        {
+                            ...defaultPieConfing,
+                            borderColor: "#1f8ef1",
+                            pointBackgroundColor: "#1f8ef1",
+                            data: casesData
+                        }
+                    ],
+                },
+                )
+                setisLoading(false)
+            }
+            else {
+                const { dailyDataDate, dailyData } = fetchTimeLineByFilter(bigChartDataFilter, response4.data)
+                setdataLine({
+                    labels: dailyDataDate
+                    , datasets: [
+                        {
+                            ...defaultPieConfing,
+                            label: bigChartDataFilter,
+                            borderColor: chartColor,
+                            pointBackgroundColor: chartColor,
+                            data: dailyData
+                        }
+                    ]
+                })
+                setisLoading(false)
+            }
+
+        } catch (e) {
+            setEror(true)
         }
     }
 
-    const fetchTimeLineByFilter = async (filterBy) => {
-        try {
-            const historicalGlobalyData = await covidReqestes.historicalGlobaly();
-            let daily = historicalGlobalyData.data[filterBy]
-            let dailyDataDate = []
-            let dailyData = []
-            for (let [key, value] of Object.entries(daily)) {
-                dailyDataDate.push(new Date(key).toLocaleDateString("en-IE"))
-                dailyData.push(value)
-            }
-            setisLoading(false)
-            return { dailyDataDate, dailyData }
+    const fetchTimeLineByFilter = (filterBy, response) => {
+        let daily = response[filterBy]
+        let dailyDataDate = []
+        let dailyData = []
+        for (let [key, value] of Object.entries(daily)) {
+            dailyDataDate.push(new Date(key).toLocaleDateString("en-IE"))
+            dailyData.push(value)
         }
-        catch (error) {
-            setEror(true)
-        }
+        return { dailyDataDate, dailyData }
     }
 
     const handleClick = (filter) => {

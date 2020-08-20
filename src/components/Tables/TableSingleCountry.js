@@ -12,8 +12,10 @@ import {
 const TableSingleCountry = ({ countryData }) => {
 
     const changeText = (text) => {
-        if (text !== undefined) {
+        if (text !== undefined && text !== null) {
             return text.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        } else {
+            return text
         }
     }
     const { active, activePerOneMillion, cases, casesPerOneMillion, continent, critical, deaths } = countryData

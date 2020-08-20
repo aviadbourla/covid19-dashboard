@@ -34,5 +34,8 @@ const historicalGlobaly = () => {
     return axios.get(`https://disease.sh/v3/covid-19/historical/all?lastdays=30`);
 }
 
+const historicalCountryDays = (country) => {
+    return axios.get(`https://disease.sh/v3/covid-19/historical/${country}?lastdays=10`);
+}
 
-export default { mapCountries, getSummary, getAll, getCountriesArr, getContinents, getSpecificCountry, getSpecificCountryHistory, historicalGlobaly }
+export default { mapCountries, getSummary, getAll, getCountriesArr, getContinents, getSpecificCountry, getSpecificCountryHistory, historicalGlobaly, historicalCountryDays }

@@ -1,0 +1,17 @@
+.modal-comleted {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.rbt {
+  width: 100%;
+}
+.modal-content {
+  flex-direction: row !important;
+  display: flex !important;
+  justify-content: space-between !important;
+}
+.rbt-menu {
+  width: 1000px !important;
+  height: 150px !important;
+}

@@ -6,13 +6,14 @@ import TopCard from '../components/Cards/TopCard'
 import { useHistory } from "react-router-dom";
 import covidReqestes from '../HttpReq/covidReqestes'
 import Footer from "components/Footer/Footer.js";
-
-
+import ShowSpiner from '../components/Spiner/ShowSpiner'
+import CardsCountry from '../components/Cards/CardsCountry'
 import {
     Card,
     CardBody,
     Row,
     Col,
+    Spinner,
 } from "reactstrap";
 
 
@@ -23,21 +24,29 @@ const DashboardCountry = (props) => {
     const [countryObj, setCountryObj] = useState('');
     const [countryObjHistory, setCountryObjHistory] = useState('');
     const { country } = useParams();
-
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingHistory, setIsLoadingHistory] = useState(true);
     let history = useHistory();
 
     const getCountries = async () => {
+        let temp = []
         try {
-            const response = await covidReqestes.getSpecificCountry(country);
-            const response2 = await covidReqestes.getSpecificCountryHistory(country)
+            await Promise.all([
+                covidReqestes.getSpecificCountry(country),
+                covidReqestes.getSpecificCountryHistory(country)])
+                .then((values) => {
+                    temp = values;
+                });
+            const response = temp[0]
+            const response2 = temp[1]
             setCountryObj(response.data)
             setCountryObjHistory(response2.data.timeline)
-        } catch (e) {
-            alert('You enter invalid country name')
-            history.push('./admin/dashboard')
+            setIsLoading(false)
+        } catch (error) {
+            alert("Country doesn't have any historical data")
+            history.push('./')
         }
     }
-
     useEffect(() => {
         getCountries();
     }, [country])
@@ -51,43 +60,13 @@ const DashboardCountry = (props) => {
             new Date(countryObj.updated).toUTCString().substring(18, 22)}</h4>
     }
 
-    const getTopCards = () => {
-
-        const { todayCases, active, recovered, todayDeaths, deaths, critical } = countryObj
-        return [
-            {
-                title: 'Today Confirmed',
-                value: todayCases
-            },
-            {
-                title: 'Total Confirmed',
-                value: active
-            },
-            {
-                title: 'Total Recovered',
-                value: recovered
-            },
-            {
-                title: 'Today Deaths',
-                value: todayDeaths
-            },
-            {
-                title: 'Total Deathsd',
-                value: deaths
-            },
-            {
-                title: 'Critical',
-                value: critical
-            }
-        ]
-    }
     return (
         <>
             <div className="content">
                 <Row>
                     <Col lg="12">
                         <div className="header-div">
-                            <h1>{countryObj.country} live Statistics </h1>
+                            <h1>{country} live Statistics </h1>
                             {
                                 getLastUpdated()
                             }
@@ -95,14 +74,7 @@ const DashboardCountry = (props) => {
                     </Col>
                 </Row>
                 <Row>
-                    {getTopCards().map(({ title, value }) => {
-                        return <Col lg="2">
-                            <TopCard
-                                title={title}
-                                cardText={value}
-                            />
-                        </Col>
-                    })}
+                    <CardsCountry countryObj={countryObj} />
                 </Row>
                 <Row>
                     <Col xs="12">
@@ -113,9 +85,11 @@ const DashboardCountry = (props) => {
                     <Col lg="12" md="12">
                         <Card>
                             <CardBody>
-                                <TableSingleCountry
-                                    countryData={countryObj}
-                                />
+                                {isLoading ? <ShowSpiner /> :
+                                    <TableSingleCountry
+                                        countryData={countryObj}
+                                        isLoading={isLoading}
+                                    />}
                             </CardBody>
                         </Card>
                     </Col>
@@ -124,9 +98,9 @@ const DashboardCountry = (props) => {
                     <Col lg="12" md="12">
                         <Card>
                             <CardBody>
-                                <TableSingleCountryHistory
-                                    country={country}
-                                    countryObjHistory={countryObjHistory} />
+                                {isLoading ? <ShowSpiner /> :
+                                    <TableSingleCountryHistory
+                                        countryObjHistory={countryObjHistory} />}
                             </CardBody>
                         </Card>
                     </Col>

@@ -9,22 +9,23 @@ import {
 } from "reactstrap";
 
 
-const TableSingleCountryHistory = (props) => {
+const TableSingleCountryHistory = ({ countryObjHistory }) => {
 
     const [countryHistoryByDate, setCountryHistoryByDate] = useState([]);
+    console.log(countryObjHistory)
 
     useEffect(() => {
-        if (props.countryObjHistory) {
+        if (countryObjHistory) {
             getCountryHistory();
         }
-    }, [props.countryObjHistory])
+    }, [countryObjHistory])
 
     const getCountryHistory = () => {
-        let casesArr = props.countryObjHistory[`cases`]
+        let casesArr = countryObjHistory[`cases`]
         const temp = Object.keys(casesArr).map((key) => {
-            const cases = props.countryObjHistory['cases'][key];
-            const deaths = props.countryObjHistory['deaths'][key];
-            const recovered = props.countryObjHistory['recovered'][key];
+            const cases = countryObjHistory['cases'][key];
+            const deaths = countryObjHistory['deaths'][key];
+            const recovered = countryObjHistory['recovered'][key];
             return {
                 date: new Date(key).toLocaleDateString("en-IE"),
                 cases: cases,

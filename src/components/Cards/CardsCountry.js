@@ -4,36 +4,19 @@ import TopCard from './TopCard'
 import ShowSpiner from '../Spiner/ShowSpiner'
 import './topCard.css'
 import {
-    Col
+    Col, Spinner
 } from "reactstrap";
+import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const Cards = () => {
-
-    const [dataCards, setDataCards] = useState([]);
-    const [isLoading, setisLoading] = useState(true);
-    const [eror, setEror] = useState(false)
-
-
-    useEffect(() => {
-        getDataApi();
-    }, [])
-
-    const getDataApi = async () => {
-        try {
-            const respone = await covidReqestes.getAll()
-            setDataCards(respone.data)
-            setisLoading(false)
-        } catch (e) {
-            setEror(true)
-        }
-    }
+const CardsCountry = ({ countryObj, isLoading }) => {
 
     const getTopCards = () => {
-        const { todayCases, cases, recovered, todayDeaths, deaths, critical } = dataCards
+        const { todayCases, cases, recovered, todayDeaths, deaths, critical } = countryObj
         return [
             {
                 title: 'Today Confirmed',
-                value: todayCases
+                value: todayCases,
             },
             {
                 title: 'Total Confirmed',
@@ -71,4 +54,4 @@ const Cards = () => {
         </React.Fragment>
     )
 }
-export default Cards
+export default CardsCountry
