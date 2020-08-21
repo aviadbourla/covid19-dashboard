@@ -38,8 +38,7 @@ const TableList = (props) => {
     }
   }
 
-  let filterArr = countriesArr.filter(c => c.country.includes(filterBy))
-
+  let filterArr = countriesArr.filter(c => c.country.toLowerCase().includes(filterBy.toLowerCase()))
 
   if (isLoading || eror) {
     return <ShowSpiner />
@@ -66,6 +65,7 @@ const TableList = (props) => {
             <th>active</th>
             <th>active Per 1M</th>
             <th>cases</th>
+            <th>todayCases</th>
             <th>cases Per 1M</th>
             <th>critical</th>
             <th>deaths</th>
@@ -82,6 +82,7 @@ const TableList = (props) => {
                 <td>{changeText(c.active)}</td>
                 <td>{changeText(c.activePerOneMillion)}</td>
                 <td>{changeText(c.cases)}</td>
+                <td>{changeText(c.todayCases)}</td>
                 <td>{changeText(c.casesPerOneMillion)}</td>
                 <td >{changeText(c.critical)}</td>
                 <td >{changeText(c.deaths)}</td>

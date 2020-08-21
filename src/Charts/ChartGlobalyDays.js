@@ -22,7 +22,6 @@ import {
 } from "reactstrap";
 
 const defaultPieConfing = {
-    label: "Deaths",
     fill: true,
     borderColor: "red",
     borderWidth: 2,
@@ -72,18 +71,21 @@ const ChartGlobalyDays = (props) => {
                     datasets: [
                         {
                             ...defaultPieConfing,
+                            label: "Deaths",
                             data: dailyData,
                             pointBackgroundColor: "red",
                             borderColor: "red",
                         },
                         {
                             ...defaultPieConfing,
+                            label: "Recovered",
                             borderColor: "green",
                             pointBackgroundColor: "green",
                             data: recoverdData
                         },
                         {
                             ...defaultPieConfing,
+                            label: "Cases",
                             borderColor: "#1f8ef1",
                             pointBackgroundColor: "#1f8ef1",
                             data: casesData
