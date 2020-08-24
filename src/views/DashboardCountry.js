@@ -74,7 +74,7 @@ const DashboardCountry = (props) => {
                     </Col>
                 </Row>
                 <Row>
-                    <CardsCountry countryObj={countryObj} />
+                    <CardsCountry countryObj={countryObj} isLoading={isLoading} />
                 </Row>
                 <Row>
                     <Col xs="12">
