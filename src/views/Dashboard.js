@@ -18,9 +18,6 @@ import {
   Row,
   Col,
 } from "reactstrap";
-// if (this.state.isloading) {
-//   return <Spiner />
-// }
 
 class Dashboard extends React.Component {
 

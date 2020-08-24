@@ -176,7 +176,7 @@ const ChartPieByCountry = (props) => {
         <Card className="card-chart">
             <WithDropDown />
             <CardHeader>
-                <h5 className="card-category">By continent </h5>
+                <h5 className="card-category">By Country </h5>
                 <CardTitle tag="h3">
                     <i className="tim-icons icon-chart-pie-36" />
                     {header()}

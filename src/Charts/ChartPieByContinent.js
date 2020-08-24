@@ -4,7 +4,6 @@ import { chartExample4 } from "../varibales/charts.js";
 import ShowSpiner from '../components/Spiner/ShowSpiner'
 import covidReqestes from '../HttpReq/covidReqestes'
 
-
 import {
     Card,
     CardHeader,
@@ -175,7 +174,7 @@ const ChartPieByContinent = (props) => {
         <Card className="card-chart">
             <WithDropDown />
             <CardHeader>
-                <h5 className="card-category">By continent </h5>
+                <h5 className="card-category">By Continent </h5>
                 <CardTitle tag="h3">
                     <i className="tim-icons icon-chart-pie-36" />
                     {header()}
