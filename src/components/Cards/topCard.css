@@ -11,13 +11,13 @@
 }
 
 .cardText {
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   font-weight: 600;
 }
 .over-flow {
   white-space: nowrap;
   overflow: hidden;
-  max-width: 200px;
+  max-width: 130px;
   text-overflow: ellipsis;
 }
 .title-card {
@@ -29,5 +29,12 @@
 @media only screen and (max-width: 600px) {
   .over-flow {
     max-width: 250px;
+  }
+}
+
+@media only screen and (max-width: 1450px) and (min-width: 992px) {
+  .cardText {
+    font-size: 1.2rem;
+    font-weight: 600;
   }
 }
